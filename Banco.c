@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 //Área para descobrir se o usuário está no windows ou no linux 
-//e criando uma definicão para limpar tela
+//e criando uma definicão para system(limpar_tela);
 #ifdef _WIN32
     #define Limpar_Tela "cls"
 #else
