@@ -1,87 +1,99 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <windows.h>
 //Área para descobrir se o usuário está no windows ou no linux 
 //e criando uma definicão para limpar tela
 #ifdef _WIN32
-    #define LimparTela "cls"
+    #define Limpar_Tela "cls"
 #else
-    #define LimparTela "clear"
+    #define Limpar_Tela "clear"
 #endif
 //---------------------------------------------------------------------
 //Área de struct 
 struct Cliente {
     char nome[50];
     int idade;
-    char CPF[11];
+    char CPF[12]; 
     int numeroConta;
     char tipoConta[20];
     float saldo;
     char status[15];
 };
-struct Cliente* clientes = NULL;
-//---------------------------------------------------------------------
-//Cabeçalho de Funções
-void tela_menu();
-void adicionarCliente();
-void listarClientes();
-void fazerDeposito();
-void fazerSaque();
-void fecharConta();
-void fazerEmprestimo();
 
+struct Cliente* clientes = NULL;
 //---------------------------------------------------------------------
 //Área de variável global
 int totalClientes = 0;
 int capacidadeClientes = 0;
-
+//---------------------------------------------------------------------
+//Cabeçalho de Funções
+void telaMenu(void);
+void realocarMemoriaClientes();
+void adicionarCliente();
+void listarClientes();
+int encontrarClientePorCPF(char CPF[]);
+void fazerDeposito();
+void fazerSaque();
+void fecharConta();
+void fazerEmprestimo();
 //---------------------------------------------------------------------
 int main(){
     int opcao;
     //-----------------------inicio-dos-códigos------------------------
-    LimparTela;
+    system(Limpar_Tela);
     printf("Seja Bem-vind@ ao Banco Imobiliario\n");
     printf("Onde nossa FUNCAO e fazer voce ficar RICO!!\n\n");
     do {
-        tela_menu();
+        telaMenu();
         printf("\nEscolha uma opcao: ");
         scanf("%d", &opcao);
         getchar(); 
+
         switch(opcao) {
             case 1:
+                system(Limpar_Tela);
                 adicionarCliente();
                 break;
             case 2:
                 listarClientes();
                 break;
             case 3:
+                system(Limpar_Tela);
                 fazerDeposito();
                 break;
             case 4:
+                system(Limpar_Tela);
                 fazerSaque();
                 break;
             case 5:
+                system(Limpar_Tela);
                 fecharConta();
                 break;
             case 6:
-            //função implementada 
+                system(Limpar_Tela);
                 fazerEmprestimo();
                 break;
             case 0:
-                printf("Saindo do sistema.\n");
+                system(Limpar_Tela);
+                printf(" _____________________________________ \n");
+                printf("|                                     |\n");
+                printf("|           Saindo do sistema         |\n");
+                printf("|_____________________________________|\n");
+                
                 break;
             default:
                 printf("Opcao invalida.\n");
         }
+        
     } while(opcao != 0);
     free(clientes);
-
     return 0;
 }
 
 //----------------------------Funções
-void tela_menu(void){
+
+//Função para mostrar o Menu
+void telaMenu(void){
     printf("_________________________________\n");
     printf("|__Opcoes__|____________________|\n");
     printf("|    0     |   Sair             |\n");
@@ -93,6 +105,7 @@ void tela_menu(void){
     printf("|    6     |   Fazer emprestimo |\n");
     printf("'''''''''''''''''''''''''''''''''");
 }
+
 void realocarMemoriaClientes() {
     if (clientes == NULL) {
         capacidadeClientes = 10;
@@ -108,7 +121,7 @@ void realocarMemoriaClientes() {
     }
 }
 
-void adicionarCliente(){
+void adicionarCliente() {
     if (totalClientes >= capacidadeClientes) {
         realocarMemoriaClientes();
     }
@@ -118,134 +131,199 @@ void adicionarCliente(){
     printf("______________________________________________\n");
     printf("Por gentileza nos informe o seu nome completo: ");
     fgets(novoCliente.nome, sizeof(novoCliente.nome), stdin);
+    novoCliente.nome[strcspn(novoCliente.nome, "\n")] = '\0'; 
+
     printf("Nos informe a sua idade: ");
     scanf("%d", &novoCliente.idade);
     getchar();
+
     printf("Nos informe o seu CPF: ");
     fgets(novoCliente.CPF, sizeof(novoCliente.CPF), stdin);
+    novoCliente.CPF[strcspn(novoCliente.CPF, "\n")] = '\0';
 
-    for (int i = 0; i < totalClientes; i++) {
-        if (strcmp(clientes[i].CPF, novoCliente.CPF) == 0) {
-            printf("Cliente ja cadastrado.\n");
-            return;
-        }
+    int indiceCliente = encontrarClientePorCPF(novoCliente.CPF);
+    if (indiceCliente != -1) {
+        printf("Cliente ja cadastrado.\n");
+        return;
     }
 
     if (novoCliente.idade < 18) {
         printf("Cliente precisa ser maior de idade.\n");
         return;
     }
+
+    printf("_________________________________\n");
+    printf("|  Opcoes  | Qual tipo de conta |\n");
+    printf("|__________|____________________|\n");
+    printf("|    0     |   Voltar           |\n");
+    printf("|    1     |   Conta Corrente   |\n");
+    printf("|    2     |   Conta Poupança   |\n");
+    printf("'''''''''''''''''''''''''''''''''\n");
+    int escolhaConta;
+    scanf("%d", &escolhaConta);
+    getchar();
+
+    if (escolhaConta == 0) {
+        return ;
+    } else if (escolhaConta == 1) {
+        strcpy(novoCliente.tipoConta, "Conta Corrente");
+    } else if (escolhaConta == 2) {
+        strcpy(novoCliente.tipoConta, "Conta Poupança");
+    } else {
+        printf("Opção inválida.\n");
+        return;
+    }
+
+    novoCliente.numeroConta = totalClientes + 1; 
+    novoCliente.saldo = 0;
+    strcpy(novoCliente.status, "Aberta");
+
+    clientes[totalClientes] = novoCliente;
+    totalClientes++;
+
+    printf("Cliente adicionado com sucesso.\n");
 }
 
 void listarClientes() {
     for (int i = 0; i < totalClientes; i++) {
+        printf("______________________________________________\n");
         printf("Cliente %d:\n", i + 1);
         printf("Nome: %s", clientes[i].nome);
-        printf("Idade: %d\n", clientes[i].idade);
-        printf("CPF: %s", clientes[i].CPF);
-        printf("Numero da Conta: %d\n", clientes[i].numeroConta);
+        printf("\tIdade: %d\n", clientes[i].idade);
+        printf("CPF: %s\n", clientes[i].CPF);
+        printf("______________________________________________\n");
+        printf("Numero da Conta: %d\t", clientes[i].numeroConta);
         printf("Tipo da Conta: %s", clientes[i].tipoConta);
-        printf("Status: %s\n", clientes[i].status);
-        printf("Saldo: %.2f\n\n", clientes[i].saldo);
+        printf("\nStatus: %s", clientes[i].status);
+        printf("\t\tSaldo: %.2f\n\n", clientes[i].saldo);
+        printf("______________________________________________\n");
     }
+}
+
+int encontrarClientePorCPF(char CPF[]) {
+    for (int i = 0; i < totalClientes; i++) {
+        if (strcmp(clientes[i].CPF, CPF) == 0) {
+            return i;
+        }
+    }
+    return -1;
 }
 
 void fazerDeposito() {
-    int numeroConta;
-    float valor;
+    char CPF[12];
+    float valorDeposito;
 
-    printf("Digite o numero da conta: ");
-    scanf("%d", &numeroConta);
+    printf("Digite o CPF do cliente: ");
+    fgets(CPF, sizeof(CPF), stdin);
+    CPF[strcspn(CPF, "\n")] = '\0';
+    printf("______________________________________________\n");
+    int indiceCliente = encontrarClientePorCPF(CPF);
+
+    if (indiceCliente == -1) {
+        printf("\t\tCliente nao encontrado.\n");
+        return;
+    }
+    printf("______________________________________________\n");
     printf("Digite o valor a ser depositado: ");
-    scanf("%f", &valor);
+    scanf("%f", &valorDeposito);
+    getchar();
 
-    for (int i = 0; i < totalClientes; i++) {
-        if (clientes[i].numeroConta == numeroConta) {
-            clientes[i].saldo += valor;
-            printf("Deposito efetuado com sucesso.\n");
-            return;
-        }
-    }
-
-    printf("Conta nao encontrada.\n");
+    clientes[indiceCliente].saldo += valorDeposito;
+    printf("______________________________________________\n");
+    printf("Deposito efetuado com sucesso.\n Novo saldo: %.2f\n", clientes[indiceCliente].saldo);
 }
+
 void fazerSaque() {
-    int numeroConta;
-    float valor;
+    char CPF[12];
+    float valorSaque;
 
-    printf("Digite o numero da conta: ");
-    scanf("%d", &numeroConta);
+    printf("Digite o CPF do cliente: ");
+    fgets(CPF, sizeof(CPF), stdin);
+    CPF[strcspn(CPF, "\n")] = '\0';
+    printf("______________________________________________\n");
+
+    int indiceCliente = encontrarClientePorCPF(CPF);
+
+    if (indiceCliente == -1) {
+        printf("Cliente nao encontrado.\n");
+        return;
+    }
+    printf("______________________________________________\n");
     printf("Digite o valor a ser sacado: ");
-    scanf("%f", &valor);
+    scanf("%f", &valorSaque);
+    getchar();
 
-    for (int i = 0; i < totalClientes; i++) {
-        if (clientes[i].numeroConta == numeroConta) {
-            if (clientes[i].saldo >= valor) {
-                clientes[i].saldo -= valor;
-                printf("Saque efetuado com sucesso.\n");
-            } else {
-                printf("Saldo insuficiente.\n");
-            }
-            return;
-        }
+    if (clientes[indiceCliente].saldo >= valorSaque) {
+        clientes[indiceCliente].saldo -= valorSaque;
+        printf("Saque de %.2f efetuado com sucesso. Novo saldo: %.2f\n", valorSaque, clientes[indiceCliente].saldo);
+    } else {
+        printf("______________________________________________\n");
+        printf("|  Saldo insuficiente para realizar o saque. |\n");
+        printf("______________________________________________\n");
     }
-    printf("Conta nao encontrada.\n");
 }
+
 void fecharConta() {
-    int numeroConta;
+    char CPF[12];
+    printf("Digite o CPF do cliente: ");
+    fgets(CPF, sizeof(CPF), stdin);
+    CPF[strcspn(CPF, "\n")] = '\0';
+    printf("______________________________________________\n");
 
-    printf("Digite o numero da conta: ");
-    scanf("%d", &numeroConta);
+    int indiceCliente = encontrarClientePorCPF(CPF);
 
-    for (int i = 0; i < totalClientes; i++) {
-        if (clientes[i].numeroConta == numeroConta) {
-            if (clientes[i].saldo == 0) {
-                strcpy(clientes[i].status, "Fechada");
-                printf("Conta fechada com sucesso.\n");
-            } else {
-                printf("E necessario esvaziar a conta antes de fecha-la.\n");
-            }
-            return;
-        }
+    if (indiceCliente == -1) {
+        printf("Cliente nao encontrado.\n");
+        return;
     }
 
-    printf("Conta nao encontrada.\n");
+    if (clientes[indiceCliente].saldo == 0) {
+        strcpy(clientes[indiceCliente].status, "Fechada");
+        printf("Conta fechada com sucesso.\n");
+    } else {
+        printf("E necessario esvaziar a conta antes de fecha-la.\n");
+    }
+    printf("______________________________________________\n");
 }
+
 void fazerEmprestimo() {
-    char CPF[15];
+    char CPF[12];
     float valorEmprestimo;
     float totalSaldos = 0;
 
     printf("Digite o CPF do cliente: ");
     fgets(CPF, sizeof(CPF), stdin);
-    int clienteEncontrado = 0;
-    int indiceConta = -1;
+    CPF[strcspn(CPF, "\n")] = '\0';
+    printf("______________________________________________\n");
+    int indiceCliente = encontrarClientePorCPF(CPF);
 
-    for (int i = 0; i < totalClientes; i++) {
-        if (strcmp(clientes[i].CPF, CPF) == 0) {
-            indiceConta = i;
-            clienteEncontrado = 1;
-            totalSaldos += clientes[i].saldo;
-            break;
-        }
+    if (indiceCliente == -1) {
+        printf("Cliente nao encontrado.\n");
+        return;
     }
+    printf("______________________________________________\n");
+    printf("Digite o valor desejado para o emprestimo: ");
+    scanf("%f", &valorEmprestimo);
+    getchar();
 
-    if (!clienteEncontrado) {
-        printf("Cliente não encontrado.\n");
+    
+    if (valorEmprestimo > (clientes[indiceCliente].saldo * 2)) {
+        printf("Valor maior que o seu limite. Insira um novo valor.\n");
         return;
     }
 
-    printf("Digite o valor desejado para o empréstimo: ");
-    scanf("%f", &valorEmprestimo);
-
-    if (valorEmprestimo > clientes[indiceConta].saldo * 2) {
-        printf("Valor maior que o seu limite. Insira um novo valor.\n");
-    } else if (valorEmprestimo + totalSaldos * 0.2 > totalSaldos) {
-        printf("Valor maior que o crédito disponível nesta agência.\n");
-    } else {
-        clientes[indiceConta].saldo += valorEmprestimo;
-        printf("Empréstimo efetuado com sucesso.\n");
+    
+    for (int i = 0; i < totalClientes; i++) {
+        totalSaldos += clientes[i].saldo;
     }
+
+    
+    if (valorEmprestimo > (totalSaldos * 0.2)) {
+        printf("Valor maior que o credito disponivel nesta agencia.\n");
+        return;
+    }
+    printf("______________________________________________\n");
+    clientes[indiceCliente].saldo += valorEmprestimo;
+    printf("Emprestimo efetuado com sucesso.\n");
+    printf("______________________________________________\n");
 }
-
-
