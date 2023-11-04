@@ -14,7 +14,7 @@
 struct Cliente {
     char nome[50];
     int idade;
-    char CPF[15];
+    char CPF[11];
     int numeroConta;
     char tipoConta[20];
     float saldo;
@@ -64,7 +64,7 @@ int main(){
                 fecharConta();
                 break;
             case 6:
-            //função ainda não criada...
+            //função implementada 
                 fazerEmprestimo();
                 break;
             case 0:
@@ -113,6 +113,7 @@ void adicionarCliente(){
     }
 
     struct Cliente novoCliente;
+
     printf("______________________________________________\n");
     printf("Por gentileza nos informe o seu nome completo: ");
     fgets(novoCliente.nome, sizeof(novoCliente.nome), stdin);
@@ -128,6 +129,7 @@ void adicionarCliente(){
             return;
         }
     }
+
     if (novoCliente.idade < 18) {
         printf("Cliente precisa ser maior de idade.\n");
         return;
@@ -150,6 +152,7 @@ void listarClientes() {
 void fazerDeposito() {
     int numeroConta;
     float valor;
+
     printf("Digite o numero da conta: ");
     scanf("%d", &numeroConta);
     printf("Digite o valor a ser depositado: ");
@@ -168,6 +171,7 @@ void fazerDeposito() {
 void fazerSaque() {
     int numeroConta;
     float valor;
+
     printf("Digite o numero da conta: ");
     scanf("%d", &numeroConta);
     printf("Digite o valor a ser sacado: ");
@@ -188,6 +192,7 @@ void fazerSaque() {
 }
 void fecharConta() {
     int numeroConta;
+
     printf("Digite o numero da conta: ");
     scanf("%d", &numeroConta);
 
@@ -202,6 +207,44 @@ void fecharConta() {
             return;
         }
     }
+
     printf("Conta nao encontrada.\n");
 }
+void fazerEmprestimo() {
+    char CPF[15];
+    float valorEmprestimo;
+    float totalSaldos = 0;
+
+    printf("Digite o CPF do cliente: ");
+    fgets(CPF, sizeof(CPF), stdin);
+    int clienteEncontrado = 0;
+    int indiceConta = -1;
+
+    for (int i = 0; i < totalClientes; i++) {
+        if (strcmp(clientes[i].CPF, CPF) == 0) {
+            indiceConta = i;
+            clienteEncontrado = 1;
+            totalSaldos += clientes[i].saldo;
+            break;
+        }
+    }
+
+    if (!clienteEncontrado) {
+        printf("Cliente não encontrado.\n");
+        return;
+    }
+
+    printf("Digite o valor desejado para o empréstimo: ");
+    scanf("%f", &valorEmprestimo);
+
+    if (valorEmprestimo > clientes[indiceConta].saldo * 2) {
+        printf("Valor maior que o seu limite. Insira um novo valor.\n");
+    } else if (valorEmprestimo + totalSaldos * 0.2 > totalSaldos) {
+        printf("Valor maior que o crédito disponível nesta agência.\n");
+    } else {
+        clientes[indiceConta].saldo += valorEmprestimo;
+        printf("Empréstimo efetuado com sucesso.\n");
+    }
+}
+
 
