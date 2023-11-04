@@ -40,11 +40,12 @@ int capacidadeClientes = 0;
 int main(){
     int opcao;
     //-----------------------inicio-dos-códigos------------------------
+    LimparTela;
     printf("Seja Bem-vind@ ao Banco Imobiliario\n");
     printf("Onde nossa FUNCAO e fazer voce ficar RICO!!\n\n");
     do {
         tela_menu();
-        printf("Escolha uma opcao: ");
+        printf("\nEscolha uma opcao: ");
         scanf("%d", &opcao);
         getchar(); 
         switch(opcao) {
