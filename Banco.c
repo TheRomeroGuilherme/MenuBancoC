@@ -40,12 +40,13 @@ int capacidadeClientes = 0;
 int main(){
     int opcao;
     //-----------------------inicio-dos-códigos------------------------
+    printf("Seja Bem-vind@ ao Banco Imobiliario\n");
+    printf("Onde nossa FUNCAO e fazer voce ficar RICO!!\n\n");
     do {
         tela_menu();
         printf("Escolha uma opcao: ");
         scanf("%d", &opcao);
-        getchar(); // Limpar o buffer do teclado
-
+        getchar(); 
         switch(opcao) {
             case 1:
                 adicionarCliente();
@@ -63,6 +64,7 @@ int main(){
                 fecharConta();
                 break;
             case 6:
+            //função ainda não criada...
                 fazerEmprestimo();
                 break;
             case 0:
@@ -100,7 +102,7 @@ void realocarMemoriaClientes() {
     }
 
     if (clientes == NULL) {
-        printf("Erro ao alocar memória para clientes.\n");
+        printf("Erro ao alocar memoria para clientes.\n");
         exit(1);
     }
 }
@@ -122,7 +124,7 @@ void adicionarCliente(){
 
     for (int i = 0; i < totalClientes; i++) {
         if (strcmp(clientes[i].CPF, novoCliente.CPF) == 0) {
-            printf("Cliente já cadastrado.\n");
+            printf("Cliente ja cadastrado.\n");
             return;
         }
     }
