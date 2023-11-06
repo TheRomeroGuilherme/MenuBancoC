@@ -1,9 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <funcoes.h>
-//----------------------------Funções
+#include "funcoes.h"
 
+//---------------------------------------------------------------------
+//Área de variável global
+int totalClientes = 0;
+int capacidadeClientes = 0;
+//----------------------------Funções
+struct Cliente* clientes = NULL;
 //Função para mostrar o Menu
 void telaMenu(void){
     printf("_________________________________\n");
@@ -69,7 +74,7 @@ void adicionarCliente() {
     printf("|__________|____________________|\n");
     printf("|    0     |   Voltar           |\n");
     printf("|    1     |   Conta Corrente   |\n");
-    printf("|    2     |   Conta Poupança   |\n");
+    printf("|    2     |   Conta Poupanca   |\n");
     printf("'''''''''''''''''''''''''''''''''\n");
     int escolhaConta;
     scanf("%d", &escolhaConta);
@@ -128,7 +133,6 @@ void fazerDeposito() {
     printf("Digite o CPF do cliente: ");
     fgets(CPF, sizeof(CPF), stdin);
     CPF[strcspn(CPF, "\n")] = '\0';
-    printf("______________________________________________\n");
     int indiceCliente = encontrarClientePorCPF(CPF);
 
     if (indiceCliente == -1) {
@@ -142,7 +146,7 @@ void fazerDeposito() {
 
     clientes[indiceCliente].saldo += valorDeposito;
     printf("______________________________________________\n");
-    printf("Deposito efetuado com sucesso.\n Novo saldo: %.2f\n", clientes[indiceCliente].saldo);
+    printf("Deposito efetuado com sucesso.\nNovo saldo: %.2f\n", clientes[indiceCliente].saldo);
 }
 
 void fazerSaque() {

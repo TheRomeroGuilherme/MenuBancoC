@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 //---------------------------------------------------------------------
 //Cabeçalho de Funções
 void telaMenu(void);
@@ -12,10 +13,7 @@ void fazerDeposito();
 void fazerSaque();
 void fecharConta();
 void fazerEmprestimo();
-//---------------------------------------------------------------------
-//Área de variável global
-int totalClientes = 0;
-int capacidadeClientes = 0;
+
 //---------------------------------------------------------------------
 //Área de struct 
 struct Cliente {
@@ -27,8 +25,7 @@ struct Cliente {
     float saldo;
     char status[15];
 };
-
-struct Cliente* clientes = NULL;
+extern struct Cliente* clientes;
 //Área para descobrir se o usuário está no windows ou no linux 
 //e criando uma definicão para system(limpar_tela);
 #ifdef _WIN32
