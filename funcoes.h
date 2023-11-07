@@ -1,9 +1,24 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+//Área para descobrir se o usuário está no windows ou no linux 
+//---------------------------------------------------------------------
+/*
+    if para define, se usuário usa windowns ele tem uma biblioteca _WIN32 
+    então a #define dele será de cls para a função Limpar_Tela() 
+    caso não tenha será considerado a função Limpar_Tela() com clear
+*/
+#ifdef _WIN32
+    #define Limpar_Tela "cls"
+#else
+    #define Limpar_Tela "clear"
+#endif
 
 //---------------------------------------------------------------------
-//Cabeçalho de Funções
+/*
+    Cabeçalho de Funções existentes no programa funcoes.c.
+    Todas as funções estão mais fáceis de se ver em funcoes.c
+*/
 void telaMenu(void);
 void realocarMemoriaClientes();
 void adicionarCliente();
@@ -15,21 +30,5 @@ void fecharConta();
 void fazerEmprestimo();
 
 //---------------------------------------------------------------------
-//Área de struct 
-struct Cliente {
-    char nome[50];
-    int idade;
-    char CPF[12]; 
-    int numeroConta;
-    char tipoConta[20];
-    float saldo;
-    char status[15];
-};
+//Área de estrutura externa
 extern struct Cliente* clientes;
-//Área para descobrir se o usuário está no windows ou no linux 
-//e criando uma definicão para system(limpar_tela);
-#ifdef _WIN32
-    #define Limpar_Tela "cls"
-#else
-    #define Limpar_Tela "clear"
-#endif
