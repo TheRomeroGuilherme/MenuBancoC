@@ -4,10 +4,10 @@
 //---------------------------------------------------------------------
 /*
     Sempre que for chamar uma função na main.c chame ela entre ".h", 
-    pois é uma biblioteca criada para no local, já as outras que 
-    contem <> são bibliotecas já feitas para otimizar trabalhos 
-    complexos, estilo a <math.h> que ajuda a minimizar os códigos com 
-    muitas operações de matemática.
+    pois é uma biblioteca criada, já as outras que contem <> são 
+    bibliotecas já feitas para otimizar trabalhos complexos, estilo 
+    a <math.h> que ajuda a minimizar os códigos com  muitas operações 
+    de matemática.
 */ 
 #include "funcoes.h"
 
@@ -19,8 +19,8 @@ int main(){
     int opcao;
     //-----------------------inicio-dos-códigos------------------------
     /*
-        Chamando função para limpar a tela, 
-        está mais fácil de ser vista em funções.h
+        Chamando função para limpar a tela, está mais fácil de ser 
+        vista em funções.h
     */
     system(Limpar_Tela);
 
@@ -34,7 +34,7 @@ int main(){
     */
     do {
         //-------------------------------------------------------------
-        /*
+        /*
             Uma função para imprimir o menu principal chamada 
             telaMenu();
         */
