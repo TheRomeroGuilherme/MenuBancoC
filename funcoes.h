@@ -32,3 +32,4 @@ void fazerEmprestimo();
 //---------------------------------------------------------------------
 //Área de estrutura externa
 extern struct Cliente* clientes;
+//ultima atualização 08/11/2023
