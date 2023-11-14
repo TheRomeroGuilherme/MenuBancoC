@@ -27,16 +27,16 @@ struct Cliente* clientes = NULL;
 
 //Função para mostrar o Menu
 void telaMenu(void){
-    printf("_________________________________\n");
-    printf("|__Opcoes__|____________________|\n");
-    printf("|    0     |   Sair             |\n");
-    printf("|    1     |   Cadastrar        |\n");
-    printf("|    2     |   Listar clientes  |\n");
-    printf("|    3     |   Fazer deposito   |\n");
-    printf("|    4     |   Fazer saque      |\n");
-    printf("|    5     |   Fechar conta     |\n");
-    printf("|    6     |   Fazer emprestimo |\n");
-    printf("'''''''''''''''''''''''''''''''''");
+    printf("\t\t_________________________________\n");
+    printf("\t\t|__Opcoes__|____________________|\n");
+    printf("\t\t|    0     |   Sair             |\n");
+    printf("\t\t|    1     |   Cadastrar        |\n");
+    printf("\t\t|    2     |   Listar clientes  |\n");
+    printf("\t\t|    3     |   Fazer deposito   |\n");
+    printf("\t\t|    4     |   Fazer saque      |\n");
+    printf("\t\t|    5     |   Fechar conta     |\n");
+    printf("\t\t|    6     |   Fazer emprestimo |\n");
+    printf("\t\t'''''''''''''''''''''''''''''''''");
 }
 //----------------------------Funções----------------------------------
 //Função para alocação de memória
@@ -98,7 +98,7 @@ void adicionarCliente() {
     //Verifica se o cliente já está cadastrado com base no CPF
     int indiceCliente = encontrarClientePorCPF(novoCliente.CPF);
     if (indiceCliente != -1) {
-        printf("Cliente já cadastrado.\n");
+        printf("Cliente ja cadastrado.\n");
         return;
     }
 
@@ -111,7 +111,7 @@ void adicionarCliente() {
     //Coleta o tipo de conta desejada pelo cliente
     printf("Qual tipo de conta deseja abrir?\n");
     printf("1 - Conta Corrente\n");
-    printf("2 - Conta Poupança\n");
+    printf("2 - Conta Poupanca\n");
     printf("0 - Voltar\n");
     int escolhaConta;
     scanf("%d", &escolhaConta);
@@ -124,9 +124,9 @@ void adicionarCliente() {
     } else if (escolhaConta == 1) {
         strcpy(novoCliente.tipoConta, "Conta Corrente");
     } else if (escolhaConta == 2) {
-        strcpy(novoCliente.tipoConta, "Conta Poupança");
+        strcpy(novoCliente.tipoConta, "Conta Poupanca");
     } else {
-        printf("Opção inválida.\n");
+        printf("Opcao invalida.\n");
         return;
     }
 

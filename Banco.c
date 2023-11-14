@@ -1,3 +1,12 @@
+/*
+//---------------------------------------------------------------------
+    Trabalho feito pelos alunos:
+//---------------------------------------------------------------------
+    Nome: Abdiel Evaristo                              | RGM: 34315861|
+    Nome: Guilherme Romero da Rosa                     | RGM: 34212086|
+    Nome: Guilhermy Palmeira da Silva Gonçalves da Rosa| RGM: 33912947|
+//---------------------------------------------------------------------
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -23,9 +32,10 @@ int main(){
         vista em funções.h
     */
     system(Limpar_Tela);
-
-    printf("Seja Bem-vind@ ao Banco Imobiliario\n");
-    printf("Onde nossa FUNCAO e fazer voce ficar RICO!!\n\n");
+    printf("\t____________________________________________________\n");
+    printf("\t\tSeja Bem-vind@ ao Banco Imobiliario\n");
+    printf("\t   Onde nossa FUNCAO e fazer voce ficar RICO!!\n");
+    printf("\t____________________________________________________\n");
     //-----------------------------------------------------------------
     /*
         Aqui temos um laço de repetição de DO WHILE, onde o usuário só 
@@ -78,11 +88,10 @@ int main(){
                 break;
             case 0:
                 system(Limpar_Tela);
-                printf(" _____________________________________ \n");
-                printf("|                                     |\n");
-                printf("|           Saindo do sistema         |\n");
-                printf("|_____________________________________|\n");
-                
+                printf("\t\t _____________________________________ \n");
+                printf("\t\t|                                     |\n");
+                printf("\t\t|           Saindo do sistema         |\n");
+                printf("\t\t|_____________________________________|\n");
                 break;
 
             default:
